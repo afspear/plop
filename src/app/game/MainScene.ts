@@ -3,6 +3,7 @@ import * as Phaser from 'phaser';
 export class MainScene extends Phaser.Scene {
 
   private littleGuy!: Phaser.GameObjects.Image & { body: Phaser.Physics.Arcade.Body; };
+  private hammer!: Phaser.GameObjects.Arc & { body: Phaser.Physics.Arcade.Body; }[];
 
   constructor() {
 
@@ -18,7 +19,20 @@ export class MainScene extends Phaser.Scene {
  
     this.littleGuy.body.setCollideWorldBounds(true);
     console.log('create method');
+
+
+    this.time.addEvent({
+      delay: 200,
+      callback: () => {
+        var ball = this.add.circle(Phaser.Math.Between(100, 700),20,3, 0xFDFDFD );
+        this.physics.add.existing(ball);
+      },
+      repeat: 64
+    });
+
   }
+
+
   preload() {
     this.load.image('little-guy', 'assets/little-guy.jpg');
     console.log('preload method');
