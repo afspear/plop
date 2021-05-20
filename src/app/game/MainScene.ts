@@ -2,32 +2,25 @@ import * as Phaser from 'phaser';
 
 export class MainScene extends Phaser.Scene {
 
-  private square!: Phaser.GameObjects.Rectangle & { body: Phaser.Physics.Arcade.Body; };
-  private circle!: Phaser.GameObjects.Arc ;
+  private littleGuy!: Phaser.GameObjects.Image & { body: Phaser.Physics.Arcade.Body; };
 
   constructor() {
 
     super({ key: 'main' });
-
 
   }
 
 
   create() {
 
-
-
-    this.square = this.add.rectangle(400, 0, 100, 100, 0xFFFFFF) as any;
-
-
-
-    this.physics.add.existing(this.square);
-    this.square.body.setCollideWorldBounds(true);
-
-    this.square.body
+    this.littleGuy = this.add.image(700, 500, 'little-guy') as any;
+    this.physics.add.existing(this.littleGuy);
+ 
+    this.littleGuy.body.setCollideWorldBounds(true);
     console.log('create method');
   }
   preload() {
+    this.load.image('little-guy', 'assets/little-guy.jpg');
     console.log('preload method');
   }
   update() {
@@ -35,17 +28,13 @@ export class MainScene extends Phaser.Scene {
 
     const cursorKeys = this.input.keyboard.createCursorKeys();
 
-    if (cursorKeys.up.isDown) {
-      this.square.body.setVelocityY(-500);
-    } else if (cursorKeys.down.isDown) {
-      this.square.body.setVelocityY(500);
-    }
+
     if (cursorKeys.right.isDown) {
-      this.square.body.setVelocityX(500);
+      this.littleGuy.body.setVelocityX(500);
     } else if (cursorKeys.left.isDown) {
-      this.square.body.setVelocityX(-500);
+      this.littleGuy.body.setVelocityX(-500);
     } else {
-      this.square.body.setVelocityX(0);
+      this.littleGuy.body.setVelocityX(0);
     }
   }
 }
