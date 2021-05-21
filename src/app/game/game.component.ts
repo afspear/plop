@@ -28,7 +28,7 @@ export class GameComponent implements OnInit {
           gravity: { y: 100 }
         }
       },
-      backgroundColor: '#320001',
+      backgroundColor: '#FFFFFF',
     };
   }
   ngOnInit() {
