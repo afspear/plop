@@ -39,6 +39,13 @@ export class MainScene extends Phaser.Scene {
   }
   update() {
 
+    var touchPointerX = this.input.pointer1.x;
+    if (this.input.pointer1.isDown) {
+      this.littleGuy.setX(touchPointerX);
+    }
+
+    
+
 
     const cursorKeys = this.input.keyboard.createCursorKeys();
 
