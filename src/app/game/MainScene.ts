@@ -24,7 +24,7 @@ export class MainScene extends Phaser.Scene {
     this.time.addEvent({
       delay: 2000,
       callback: () => {
-        var ball = this.add.circle(Phaser.Math.Between(100, 700),20,30, 0xFDFDFD );
+        var ball = this.add.circle(Phaser.Math.Between(100, 700),20,30, 0x999999 );
         this.physics.add.existing(ball);
       },
       repeat: 64
