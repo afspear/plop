@@ -46,7 +46,7 @@ export class MainScene extends Phaser.Scene {
           collider.collideCallback = (obj1, obj2) => {
 
             if (obj1.body.y >= obj2.body.y) {
-              var text = this.add.text(obj2.body.x, obj2.body.y, 'BONK!');
+              var text = this.add.text(obj2.body.x, obj2.body.y, 'PLOP!');
               text.setColor('blue');
               text.setScale(4,4);
               this.time.delayedCall(500, () => {text.destroy()}); 
