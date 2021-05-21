@@ -68,7 +68,7 @@ export class MainScene extends Phaser.Scene {
                 this.add.text(
                   screenCenterX, 
                   screenCenterY, 
-                  'That was ' + this.bonks + ' bonks in ' + totalTime + ' seconds. Reload to play again.',  
+                  'Wow! ' + totalTime + ' seconds. Reload to play again.', 
                   { fontFamily: 'Arial', 
                     fontSize: '64px', 
                     color: '#00ff00', 
@@ -81,7 +81,7 @@ export class MainScene extends Phaser.Scene {
                   }
                 ).setOrigin(0.5);
 
-              loadingText.setColor('red');
+              loadingText.setColor('green');
 
 
             
