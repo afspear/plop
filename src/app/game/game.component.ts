@@ -10,6 +10,8 @@ import { MainScene } from './MainScene';
 export class GameComponent implements OnInit {
 
 
+  plops: string = '';
+
 
   phaserGame: Phaser.Game | undefined;
   config: Phaser.Types.Core.GameConfig;
@@ -19,7 +21,7 @@ export class GameComponent implements OnInit {
       scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: window.innerWidth,
+        width: window.innerWidth - 400,
         height: window.innerHeight,
       },
       scene: [ MainScene ],
@@ -36,6 +38,10 @@ export class GameComponent implements OnInit {
   ngOnInit() {
 
     this.phaserGame = new Phaser.Game(this.config);
+    this.phaserGame.events.addListener('test', (arg: string) => {
+      this.plops = arg;
+
+    })
   }
 
 }

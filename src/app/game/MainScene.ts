@@ -2,11 +2,10 @@ import * as Phaser from 'phaser';
 
 export class MainScene extends Phaser.Scene {
 
-  private littleGuy!: Phaser.GameObjects.Image & { body: Phaser.Physics.Arcade.Body; };
-  private balls: Phaser.GameObjects.Arc[] = [];
-  private ballTimer!: Phaser.Time.TimerEvent;
-  private bonksText!: Phaser.GameObjects.Text;
-  private bonks = 0;
+  private girl!: Phaser.GameObjects.Image & { body: Phaser.Physics.Arcade.Body; };
+  private poopTimer!: Phaser.Time.TimerEvent;
+  private plopsText!: Phaser.GameObjects.Text;
+  private plops = 0;
   private start = 0;
 
   constructor() {
@@ -20,41 +19,52 @@ export class MainScene extends Phaser.Scene {
 
     this.start = this.time.now;
 
-    this.littleGuy = this.add.image(700, 500, 'little-guy') as any;
-    this.littleGuy.scale =  this.cameras.main.height * .001;
-    this.physics.add.existing(this.littleGuy);
+    const plopSound = this.sound.add('plop');
+
+    var windowWidth = window.innerWidth;
+var widnowHeight = window.innerHeight;
+
+    const background = this.add.image(windowWidth / 2, widnowHeight / 2, "home");
+    // Based on your game size, it may "stretch" and distort.
+    background.setDisplaySize(windowWidth, widnowHeight);
+
+
+    this.girl = this.add.image(700, 500, 'girl') as any;
+    this.girl.scale =  this.cameras.main.height * .001;
+    this.physics.add.existing(this.girl);
  
-    this.littleGuy.body.setCollideWorldBounds(true);
+    this.girl.body.setCollideWorldBounds(true);
     console.log('create method');
 
-    this.bonksText = this.add.text(20, 20, 'BONKS:' + this.bonks);
-    this.bonksText.setColor('black');
+    this.plopsText = this.add.text(20, 20, 'PLOPS:' + this.plops);
+    this.plopsText.setColor('black');
 
-    this.ballTimer = this.time.addEvent({
+    this.poopTimer = this.time.addEvent({
       delay: 2000,
       callback: () => {
-        var ball = this.add.circle(Phaser.Math.Between(0, this.cameras.main.worldView.width) ,0,30, 0x999999 );
-        this.physics.add.existing(ball);
+        var poop = this.add.image(Phaser.Math.Between(0, this.cameras.main.worldView.width), 0 ,'poop' );
+        poop.scale =  this.cameras.main.height * .0003;
+        this.physics.add.existing(poop);
 
-        if(ball.body instanceof Phaser.Physics.Arcade.Body) {
-          ball.body.setBounce(.7, .7);
-          //ball.body.setCollideWorldBounds(true);
+        if(poop.body instanceof Phaser.Physics.Arcade.Body) {
+          poop.body.setBounce(.7, .7);
 
-          
-
-          var collider = this.physics.add.collider(this.littleGuy, ball);
+      
+          var collider = this.physics.add.collider(this.girl, poop);
           collider.collideCallback = (obj1, obj2) => {
 
             if (obj1.body.y >= obj2.body.y) {
+              plopSound.play();
               var text = this.add.text(obj2.body.x, obj2.body.y, 'PLOP!');
               text.setColor('blue');
               text.setScale(4,4);
               this.time.delayedCall(500, () => {text.destroy()}); 
-              this.bonks = this.bonks + 1;
-              this.bonksText.text = 'BONKS:' + this.bonks;
+              this.plops = this.plops + 1;
+              this.plopsText.text = 'PLOPS:' + this.plops;
+              this.game.events.emit('test', this.plops.toString())
             }
             
-            if(this.bonks > 5) {
+            if(this.plops > 100) {
               const screenCenterX = this.cameras.main.worldView.x + this.cameras.main.width / 2;
               const screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
 
@@ -83,19 +93,12 @@ export class MainScene extends Phaser.Scene {
 
               loadingText.setColor('green');
 
-
-            
-
-              //too many bonks. end the game
+              //too many plops. end the game
               this.game.destroy(false);
 
             }
 
           };
-          this.balls.forEach(existingBall => {
-            this.physics.add.collider(ball, existingBall);
-          });
-          this.balls.push(ball);
         }
       },
       loop: true
@@ -105,7 +108,7 @@ export class MainScene extends Phaser.Scene {
       {
         delay: 10000,
         callback: () => {
-          this.ballTimer.timeScale = this.ballTimer.timeScale * 1.5;
+          this.poopTimer.timeScale = this.poopTimer.timeScale * 1.5;
         },
         loop: true
       }
@@ -116,7 +119,10 @@ export class MainScene extends Phaser.Scene {
 
 
   preload() {
-    this.load.image('little-guy', 'assets/little-guy.png');
+    this.load.image('girl', 'assets/girl.png');
+    this.load.image('home', 'assets/home.jpg');
+    this.load.image('poop', 'assets/poop.png');
+    this.load.audio('plop', 'assets/plop.mp3');
     console.log('preload method');
   }
 
@@ -126,7 +132,7 @@ export class MainScene extends Phaser.Scene {
     //touch
     var touchPointerX = this.input.pointer1.x;
     if (this.input.pointer1.isDown) {
-      this.littleGuy.setX(touchPointerX);
+      this.girl.setX(touchPointerX);
     }
 
     
@@ -140,16 +146,12 @@ export class MainScene extends Phaser.Scene {
 
 
     if (cursorKeys.right.isDown) {
-      this.littleGuy.body.setVelocityX(500);
+      this.girl.body.setVelocityX(500);
     } else if (cursorKeys.left.isDown) {
-      this.littleGuy.body.setVelocityX(-500);
+      this.girl.body.setVelocityX(-500);
     } else {
-      this.littleGuy.body.setVelocityX(0);
+      this.girl.body.setVelocityX(0);
     }
   }
 
-  resize ()
-  {
-      this
-  }
 }
