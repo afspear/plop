@@ -1,0 +1,39 @@
+<div class="p-2">
+    <div class="jumbotron">
+        <h1 class="display-4">PLOP!</h1>
+    </div>
+    
+    <h2>
+        Choose your background!
+    </h2>
+    
+    <div class="row">
+        <img 
+        *ngFor="let background of backgrounds;"
+            class="m-4" 
+            [src]="background" 
+            (click)="selectBackground(background)" 
+            [ngClass]="{'select': selectedBackground === background}" 
+            
+        >
+    </div>
+      
+      <h2>Choose your player!</h2>
+      <div class="row">
+            <img 
+                class="m-4" 
+                [src]="player" 
+                (click)="selectPlayer(player)" 
+                [ngClass]="{'select': selectedPlayer === player}" 
+                *ngFor="let player of players;"
+            >
+    </div>
+    <p>
+        Touch the screen or use the arrow keys (⬅️, ➡️) to move the player. 😉
+    </p>
+    
+      <button class="btn btn-primary btn-lg" (click)="goPlay()">PLAY!</button>
+      {{ warning }}
+</div>
+
+

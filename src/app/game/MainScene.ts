@@ -2,7 +2,9 @@ import * as Phaser from 'phaser';
 
 export class MainScene extends Phaser.Scene {
 
-  private girl!: Phaser.GameObjects.Image & { body: Phaser.Physics.Arcade.Body; };
+  private player!: Phaser.GameObjects.Image & { body: Phaser.Physics.Arcade.Body; };
+  private playerImage!: string;
+  private backgroundImage !: string;
   private poopTimer!: Phaser.Time.TimerEvent;
   private plopsText!: Phaser.GameObjects.Text;
   private plops = 0;
@@ -12,6 +14,12 @@ export class MainScene extends Phaser.Scene {
 
     super({ key: 'main' });
 
+  }
+
+  init(data: any) {
+    this.playerImage = data.playerImage;
+    this.backgroundImage = data.backgroundImage;
+    console.log(data.playerImage);
   }
 
 
@@ -24,16 +32,16 @@ export class MainScene extends Phaser.Scene {
     var windowWidth = window.innerWidth;
 var widnowHeight = window.innerHeight;
 
-    const background = this.add.image(windowWidth / 2, widnowHeight / 2, "home");
+    const background = this.add.image(windowWidth / 2, widnowHeight / 2, "background");
     // Based on your game size, it may "stretch" and distort.
     background.setDisplaySize(windowWidth, widnowHeight);
 
 
-    this.girl = this.add.image(700, 500, 'girl') as any;
-    this.girl.scale =  this.cameras.main.height * .001;
-    this.physics.add.existing(this.girl);
+    this.player = this.add.image(700, 500, 'player') as any;
+    this.player.scale =  this.cameras.main.height * .001;
+    this.physics.add.existing(this.player);
  
-    this.girl.body.setCollideWorldBounds(true);
+    this.player.body.setCollideWorldBounds(true);
     console.log('create method');
 
     this.plopsText = this.add.text(20, 20, 'PLOPS:' + this.plops);
@@ -50,7 +58,7 @@ var widnowHeight = window.innerHeight;
           poop.body.setBounce(.7, .7);
 
       
-          var collider = this.physics.add.collider(this.girl, poop);
+          var collider = this.physics.add.collider(this.player, poop);
           collider.collideCallback = (obj1, obj2) => {
 
             if (obj1.body.y >= obj2.body.y) {
@@ -119,8 +127,8 @@ var widnowHeight = window.innerHeight;
 
 
   preload() {
-    this.load.image('girl', 'assets/girl.png');
-    this.load.image('home', 'assets/home.jpg');
+    this.load.image('player', this.playerImage);
+    this.load.image('background', this.backgroundImage);
     this.load.image('poop', 'assets/poop.png');
     this.load.audio('plop', 'assets/plop.mp3');
     console.log('preload method');
@@ -132,7 +140,7 @@ var widnowHeight = window.innerHeight;
     //touch
     var touchPointerX = this.input.pointer1.x;
     if (this.input.pointer1.isDown) {
-      this.girl.setX(touchPointerX);
+      this.player.setX(touchPointerX);
     }
 
     
@@ -146,11 +154,11 @@ var widnowHeight = window.innerHeight;
 
 
     if (cursorKeys.right.isDown) {
-      this.girl.body.setVelocityX(500);
+      this.player.body.setVelocityX(500);
     } else if (cursorKeys.left.isDown) {
-      this.girl.body.setVelocityX(-500);
+      this.player.body.setVelocityX(-500);
     } else {
-      this.girl.body.setVelocityX(0);
+      this.player.body.setVelocityX(0);
     }
   }
 

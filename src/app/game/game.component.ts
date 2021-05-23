@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import * as Phaser from 'phaser';
 import { MainScene } from './MainScene';
 
@@ -11,6 +11,12 @@ export class GameComponent implements OnInit {
 
 
   plops: string = '';
+
+  @Input() 
+  playerImage!: string;
+
+  @Input() 
+  backgroundImage!: string
 
 
   phaserGame: Phaser.Game | undefined;
@@ -40,8 +46,9 @@ export class GameComponent implements OnInit {
     this.phaserGame = new Phaser.Game(this.config);
     this.phaserGame.events.addListener('test', (arg: string) => {
       this.plops = arg;
-
-    })
+    });
+    
+    this.phaserGame.scene.start('main', {playerImage: this.playerImage, backgroundImage: this.backgroundImage });
   }
 
 }

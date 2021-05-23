@@ -1,3 +1,9 @@
 
 <router-outlet></router-outlet>
-<app-game></app-game>
+<app-intro 
+    (playerImage)="this.playerImage = $event" 
+    (backgroundImage)="this.backgroundImage = $event"
+    (play)="this.play = $event" 
+    *ngIf="!play"
+    ></app-intro>
+<app-game *ngIf="play" [playerImage]='playerImage' [backgroundImage]='backgroundImage'></app-game>
