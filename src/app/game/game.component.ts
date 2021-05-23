@@ -21,7 +21,7 @@ export class GameComponent implements OnInit {
       scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: window.innerWidth - 400,
+        width: window.innerWidth,
         height: window.innerHeight,
       },
       scene: [ MainScene ],
