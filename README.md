@@ -1,6 +1,6 @@
 # plop
 
-game available at https://bonkgame.netlify.app/
+game available at https://plopgame.netlify.app/
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.1.
 
