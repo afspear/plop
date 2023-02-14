@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import * as Phaser from 'phaser';
 import { MainScene } from './MainScene';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-game',
@@ -9,8 +10,18 @@ import { MainScene } from './MainScene';
 })
 export class GameComponent implements OnInit {
 
+  plops: string ='';
 
-  plops: string = '';
+  exclamations =  ['amazing', 'awesome', ' cool', ' amazeballs', ' cool beans', ' nice out of this world', ' terrific', ' cowabunga', ' gee-whizz', 
+  ' awesome sauce', ' far-out', ' super-duper', ' tremendous', ' unreal', ' wicked', ' mmm ', 'goshwow', ' fantastic', ' groovy', ' gnarly', ' sweet',
+   ' fabulous', ' excellent', ' yay', ' yippee', ' hooray', ' wonderful', ' splendid', ' woot', ' yeah', ' woohoo', ' whoopee', ' fab ', 'whee', ' booyah', 
+   ' right on', ' incredible ', 'great', ' yea', ' yes', ' dude ', 'hurray ', 'hurrah', ' huzzah ', 'hoorah', ' alright', 'w00t', ' wahoo', ' tuwhit ', 'tuwhoo', ' whoo'];
+
+  done: boolean|undefined;
+
+  totalTime: number|undefined;
+
+  exclamation: string|undefined;
 
   @Input() 
   playerImage!: string;
@@ -21,7 +32,8 @@ export class GameComponent implements OnInit {
 
   phaserGame: Phaser.Game | undefined;
   config: Phaser.Types.Core.GameConfig;
-  constructor() {
+
+  constructor(private http: HttpClient) {
     this.config = {
       type: Phaser.AUTO,
       scale: {
@@ -44,11 +56,29 @@ export class GameComponent implements OnInit {
   ngOnInit() {
 
     this.phaserGame = new Phaser.Game(this.config);
-    this.phaserGame.events.addListener('test', (arg: string) => {
+    this.phaserGame.events.addListener('plopCount', (arg: string) => {
       this.plops = arg;
+    });
+
+    this.phaserGame.events.addListener('totalTime', (arg: number) => {
+      this.totalTime = arg;
+    });
+
+    this.phaserGame.events.addListener('destroy', () => {
+      this.exclamation = this.exclamations[Math.floor(Math.random() * this.exclamations.length)].toUpperCase();
+      this.done = true
     });
     
     this.phaserGame.scene.start('main', {playerImage: this.playerImage, backgroundImage: this.backgroundImage });
   }
+
+  playAgain() {
+    window.location.reload();
+  }
+
+
+
+
+
 
 }
