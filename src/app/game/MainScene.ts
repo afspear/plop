@@ -69,7 +69,7 @@ var widnowHeight = window.innerHeight;
               this.time.delayedCall(500, () => {text.destroy()}); 
               this.plops = this.plops + 1;
               this.plopsText.text = 'PLOPS:' + this.plops;
-              this.game.events.emit('test', this.plops.toString())
+              this.game.events.emit('plopCount', this.plops.toString())
             }
             
             if(this.plops > 9) {
@@ -80,29 +80,10 @@ var widnowHeight = window.innerHeight;
               let end = this.time.now;
               let totalTime = Math.round((end - this.start) / 1000);
 
-
-              
-              const loadingText = 
-                this.add.text(
-                  screenCenterX, 
-                  screenCenterY, 
-                  'Wow! ' + totalTime + ' seconds. Reload to play again.', 
-                  { fontFamily: 'Arial', 
-                    fontSize: '64px', 
-                    color: '#00ff00', 
-                    fontStyle: 'bold', 
-                    wordWrap: 
-                      {
-                        useAdvancedWrap: true, 
-                        width: this.cameras.main.width
-                      } 
-                  }
-                ).setOrigin(0.5);
-
-              loadingText.setColor('green');
+              this.game.events.emit('totalTime', totalTime);
 
               //too many plops. end the game
-              this.game.destroy(false);
+              this.game.destroy(true, false);
 
             }
 
