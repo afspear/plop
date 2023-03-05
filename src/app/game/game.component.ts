@@ -42,6 +42,9 @@ export class GameComponent implements OnInit {
         width: window.innerWidth,
         height: window.innerHeight,
       },
+      input: {
+        gamepad: true
+    },
       scene: [ MainScene ],
       parent: 'gameContainer',
       physics: {
