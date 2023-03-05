@@ -19,7 +19,7 @@ export class GameComponent implements OnInit {
 
   done: boolean|undefined;
 
-  totalTime: number|undefined;
+  totalTime: number = 0;
 
   exclamation: string|undefined;
 
