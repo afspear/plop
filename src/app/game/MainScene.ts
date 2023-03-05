@@ -3,6 +3,7 @@ import * as Phaser from 'phaser';
 export class MainScene extends Phaser.Scene {
 
   private player!: Phaser.GameObjects.Image & { body: Phaser.Physics.Arcade.Body; };
+  private indicator!: Phaser.GameObjects.Sprite
   private playerImage!: string;
   private backgroundImage !: string;
   private poopTimer!: Phaser.Time.TimerEvent;
@@ -28,9 +29,32 @@ export class MainScene extends Phaser.Scene {
     this.start = this.time.now;
 
     const plopSound = this.sound.add('plop');
+    const notification = this.sound.add('notification');
 
     var windowWidth = window.innerWidth;
-var widnowHeight = window.innerHeight;
+    var widnowHeight = window.innerHeight;
+
+    this.indicator = this.add.sprite(10,10, 'controller-indicator');
+    this.indicator.x = this.indicator.y = 2;
+
+    if (this.input.gamepad.total === 0)
+    {
+        const text = this.add.text(10, 10, 'Press any button on a connected Gamepad', { font: '16px Courier' });
+
+        this.input.gamepad.once('connected', function (pad: { id: any; }) {
+
+            console.log('connected', pad.id);
+            notification.play();
+
+            text.destroy();
+
+        }, this);
+    }
+    else
+    {
+
+    }
+
 
     const background = this.add.image(windowWidth / 2, widnowHeight / 2, "background");
     // Based on your game size, it may "stretch" and distort.
@@ -112,6 +136,7 @@ var widnowHeight = window.innerHeight;
     this.load.image('background', this.backgroundImage);
     this.load.image('poop', 'assets/poop.png');
     this.load.audio('plop', 'assets/plop.mp3');
+    this.load.audio('notification', 'assets/notification.mp3');
     console.log('preload method');
   }
 
@@ -123,6 +148,46 @@ var widnowHeight = window.innerHeight;
     if (this.input.pointer1.isDown) {
       this.player.setX(touchPointerX);
     }
+
+    //game controller
+    var pads = this.input.gamepad.gamepads;
+
+    for (var i = 0; i < pads.length; i++)
+    {
+        var gamepad = pads[i];
+
+        if (!gamepad)
+        {
+            continue;
+        }
+
+        if (gamepad.left || gamepad.leftStick.x < 0)
+        {
+          this.player.body.x-=10;
+        }
+        else if (gamepad.right || gamepad.leftStick.x > 0)
+        {
+          this.player.body.x+=10;
+        }
+
+        if (gamepad.leftStick.y < 0)
+        {
+            this.player.body.y-=15;
+        }
+        if (gamepad.leftStick.y > 0)
+        {
+            this.player.body.y+=15;
+        }
+        else if (gamepad.down)
+        {
+            
+        }
+        else 
+        {
+          this.player.body.setVelocityX(0);
+        }
+    }
+
 
     
 
