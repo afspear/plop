@@ -163,16 +163,20 @@ export class MainScene extends Phaser.Scene {
 
         if (gamepad.left || gamepad.leftStick.x < 0)
         {
-          this.player.body.x-=5;
+          this.player.body.x-=10;
         }
         else if (gamepad.right || gamepad.leftStick.x > 0)
         {
-          this.player.body.x+=5;
+          this.player.body.x+=10;
         }
 
-        if (gamepad.up)
+        if (gamepad.leftStick.y < 0)
         {
-            this.player.body.y++;
+            this.player.body.y-=15;
+        }
+        if (gamepad.leftStick.y > 0)
+        {
+            this.player.body.y+=15;
         }
         else if (gamepad.down)
         {
