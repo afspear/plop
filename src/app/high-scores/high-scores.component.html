@@ -1,4 +1,4 @@
-<div *ngIf="highScore">
+<div *ngIf="highScore && !scoreEntered">
     <h1>
         You got a high score! Enter your name.
     </h1> 
@@ -7,7 +7,7 @@
 </div>
 
 
-<h1>Hight Scores</h1>
+<h1>High Scores</h1>
 
 <table class="table">
     <thead>

@@ -17,6 +17,7 @@ export class HighScoresComponent {
 
   @Input() score = 0; 
   highScore = false;
+  scoreEntered = false;
   name = '';
   
 
@@ -54,8 +55,7 @@ export class HighScoresComponent {
       return;
     }
 
-
-    this.highScore = false;
+    this.scoreEntered = true;
     const id = uuid.v4();
     setDoc(doc(this.firestore, 'scores', id), {name : this.name, score: this.score})
     this.cdRef.detectChanges();
