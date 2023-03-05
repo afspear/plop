@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { Firestore, collectionData, collection, setDoc, doc} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+
+import { profanity } from '@2toad/profanity';
 import * as uuid from 'uuid';
 
 export interface Score { name: string; score: number;}
@@ -46,6 +48,13 @@ export class HighScoresComponent {
   }
 
   sendScore() {
+
+    if(profanity.exists(this.name)) {
+      window.alert("Hey Smarty pants! Watch the language! Enter something else");
+      return;
+    }
+
+
     this.highScore = false;
     const id = uuid.v4();
     setDoc(doc(this.firestore, 'scores', id), {name : this.name, score: this.score})
