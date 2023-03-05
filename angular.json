@@ -44,7 +44,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "2.5mb"
+                  "maximumError": "3.0mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -109,6 +109,5 @@
         }
       }
     }
-  },
-  "defaultProject": "bonk"
+  }
 }
